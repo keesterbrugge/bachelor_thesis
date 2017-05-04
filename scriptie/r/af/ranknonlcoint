@@ -1,0 +1,31 @@
+library(xlsReadWrite)
+#install.packages("foreign")
+library(foreign)
+setwd("C:\\Users\\kc\\Documents\\My Dropbox\\scriptie\\r")
+
+data <- read.csv("priceanddiv1871_2009.csv",sep=",")
+
+
+rankcoint <- function(y,x){
+   x <- rank(x)
+  y <- rank(y)
+  n <- length(y)
+dx <- x[2:n]-x[1:n-1]
+dy <- y[2:n]-y[1:n-1]
+Rankrho <- dx%*%dy/sqrt(dx%*%dx*dy%*%dy)
+z <- y-x
+  dz<-z[2:n]-z[1:n-1]
+  sig<-dz%*%dz/n
+     
+  kap<- max(abs(z))/sqrt(sig*n)
+  xi<- z%*%z/sig/n^2;
+  kap<- kap/(1-0.174*Rankrho^2)
+  xi<-xi/(1-0.462*Rankrho)
+
+return(list(kap=kap,xi=xi))
+}
+
+data
+rankcoint(data[,1], data[,2])
+
+

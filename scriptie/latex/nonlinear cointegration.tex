@@ -1,0 +1,89 @@
+ \documentclass{article}
+
+\usepackage{graphicx}
+\usepackage[toc,page]{appendix}
+
+\usepackage[a4paper]{geometry}
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+\usepackage{amstext,amsmath,amsfonts}
+\usepackage{dcolumn,booktabs}
+\usepackage{color}
+\usepackage{subfigure}
+\usepackage{amsthm}
+
+\makeatletter
+\def\maketitle{%
+  \null
+  \thispagestyle{empty}%
+  \vfill
+  \begin{center}\leavevmode
+    \normalfont
+    {\LARGE \@title\par}%
+    \vskip 1cm
+    {\Large \@author\par}%
+    \vskip 1cm
+    {\Large \@date\par}%
+  \end{center}%
+  \vfill
+  \null
+  \cleardoublepage
+  }
+\makeatother
+\title{Bachelor thesis}
+
+\author{Kees ter Brugge\\}
+                
+                
+\date{\today}
+
+\begin{document}
+ \maketitle
+
+
+
+\newpage
+Finding a long-run nonlinear
+stock price–dividend relationship could be seen as evidence that intrinsic bubbles are relevant in
+the long run and, hence, are important in explaining the long-run excessive volatility of stock prices. 
+To test for a nonlinear long-run  price–dividend relationship, we test for nonlinear cointegration between prices and dividends. 
+ Breitung (2001) shows that  residual-based linear cointegrations, like Granger and Hallman\’s (1991) nonlinear cointegration test, are inconsistent for some classes of nonlinear functions. He suggests a nonparametric cointegration test that uses the rank transformation between two variables and claims it to be more powerfull than parametric cointegration tests if the cointegration relationship is nonlinear. The hypothesis that prices and dividends are  linearly cointegrated is already rejected. Therefore we can savely assume that when Breitung's test gives us evidence for cointegration, it is for nonlinear cointegration. \\
+
+We haven't rejected the hypothesises that $P_t$ and $D_t$ are integrated of order one. The null hypothesis that is being tested is that there exist monotonic functions f and g such that 
+ \begin{eqnarray}
+f(P_t) - g(D_t) = u_t
+\end{eqnarray}
+where $u_t$ is integrated of order one, which means prices and dividends are not cointegrated. With a rank-based test we don't have to know the specific functions f and g, only that f and g are monotonic functions. Monotonic transformations don't change ranks.
+\begin{eqnarray}
+R_T (f(P_t)) = R_T (P_t) \notag \\
+ R_T (g(D_t)) = R_T (D_t) \notag
+\end{eqnarray}
+where $R_T(P_t)$ returns the rank of $P_t$ among $P_{1871},...,P_{2009}$. Prices and dividends are assumed to be random walks, therefore their rank transformations follow ranked random walks.
+When there is a big rank transformation between the series, it seems unlikely that the two series are cointegrated. We assess the size of the transformation by measuring the difference in ranks at each time instant using $\delta_t$.
+\begin{eqnarray}
+\delta_t = R_T(P_t) - R_T(D_t) \notag
+\end{eqnarray}
+With this measure we make the following statistics
+\begin{eqnarray} 
+\kappa_T = T^{-1} \sup_{t} |\delta_t| \notag
+\xi_T = T^{-3} \sum_{t=1871}^{2009} \delta_t^2 \notag
+\end{eqnarray}
+These statistics have to be corrected if the considered time series are correlated, which is obviously the case with prices and dividends. To measure the correlation of the ranked series, the following statistic is defined
+\begin{eqnarray}
+\rho_T^R = \frac{\sum_{t=1872}^{2009} \Delta R_T(P_t)\Delta R_T(D_t)}{\sqrt{(\sum_{t=1872}^{2009} \Delta R_T(P_t)^2)(\sum_{t=1872}^{2009} \Delta R_T(D_t)^2)}} 
+\end{eqnarray}
+Breitung (2001) shows that for moderate values of correlation between time series, the ranked correlation is  biased downwards in absolute value. With $\rho_T^R =0.68$, we therefore use the following adjusted test statistics \footnotemark \footnotetext{ See Breitung (2001) for more information on how these statistics are derived.}
+\begin{eqnarray}
+\kappa_T^{**} =  \frac{\kappa_T}{\widehat{\sigma}_{\Delta \delta} (1-0.174(\rho_T^R)^2)} \label{kappa}
+\xi_T^{**} = \frac{\xi_T}{\widehat{\sigma}^2_{\Delta \delta} (1-0.462\rho_T^R)} \label{xi}
+\end{eqnarray} 
+where $\widehat{\sigma}^2_{\Delta \delta} = T^{-2}\sum_{t=1872}^{2009}(\delta_t - \delta_{t-1} )^2$. We obtain the following statistics $\kappa_T^{**} = 0.3496 $and $ \xi_T^{**} = 0.0144 $. These statistics are both significant at the $5 \%$ level, so we reject the null hypothesis of no cointegration of prices and dividends. 
+One sided testing  is used, since we do not want to investigate a long-run relationship in which prices and dividends are inversely related.
+
+
+
+
+
+
+\end{document}

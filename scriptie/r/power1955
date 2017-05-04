@@ -1,0 +1,48 @@
+fstat <- array(0, dim=c(10,4))
+power <- array(0,dim=c(4,1))
+for(k in 0:3){
+b <- c(12.7, k, 3.03)
+start <- c(15, 1, 3.3)
+dev <- 20
+t <- 100
+m <- 10
+A <- array(0, dim=c(m,3))
+F <- array(0, dim=c(m,1))
+d0 <- 1.72
+mu <- 0.02
+sigma <- 0.05
+
+#making dividends
+div <- array(0, dim=c(t,1))
+div[1] <- d0
+eps <- rnorm(t-1, mean = mu, sd = sigma)
+for(i in 2:t){
+	div[i] <- div[i-1] + eps[i-1]
+}
+for(j in 1:m){
+#constructing errors and prices
+ar.sim<-arima.sim(model=list(ar=c(.67,-.5,0.25)),n=t, sd = dev)
+P <- b[1]*exp(div) + b[2]*exp(div*b[3]) + ar.sim
+
+# nls on unrestricted model
+Beta <- nls(P~ beta1*exp(div) + beta2*exp(div*beta3), 
+start=list(beta1 = start[1], beta2= start[2], beta3 = start[3]), 
+control = nls.control(maxiter = 50, minFactor = 1/2048, warnOnly=T), trace=T)
+
+#nls with restricted lambda
+nlsrestr <- nls(P~ beta4*exp(div) + beta5*exp(div*(coef(Beta)[3])), 
+start=list(beta4 = start[1], beta5= start[2]), 
+control = nls.control(maxiter = 50, minFactor = 1/2048, warnOnly=T))
+
+# when 0 is not in ci, reject h0 
+if(confint(nlsrestr, vcoc=NeweyWest(nlsrestr))[2,1] > 0){F[j] <- 1}
+fstat[j,k+1] <- coef(nlsrestr)[2]/deviance(nlsrestr)[2]
+}
+# percentage of F tests that rejects h0: c=0 
+power[k+1] <- mean(F)
+}
+hist(power)
+plot(density(power))
+power
+fstat
+#does not work!

@@ -1,0 +1,50 @@
+
+div <- array(0, dim=c(131,1))
+div[1] <- 0.52
+eps <- rnorm(130, mean = 0.0162, sd = 0.1257)
+for(i in 2:131){
+	div[i] <- div[i-1] + eps[i-1]
+}
+a <- array(0, dim=c(500,3))
+for(j in 1:500){
+ar.sim<-arima.sim(model=list(ar=c(.67,-.5),0.25),n=131, sd = 7)
+P <- 15*exp(div) + 0.15*exp(div*2.6)
+P 
+beta <- nls(P~0 + beta1*exp(div) + beta2*exp(div*beta3), 
+start=list(beta1 = 10, beta2= 0.5, beta3 = 3))
+a[j,] <- coef(beta)
+}
+a
+
+
+
+div <- array(0, dim=c(131,1))
+div[1] <- 0.52
+eps <- rnorm(130, mean = 0.0162, sd = 0.1257)
+for(i in 2:131){
+	div[i] <- div[i-1] + eps[i-1]
+}
+ar.sim<-arima.sim(model=list(ar=c(.67,-.5),0.25),n=131, sd = 7)
+P <- 15*exp(div) + 0.15*exp(div*2.6) + ar.sim
+beta <- nls(P~0 + beta1*exp(div) + beta2*exp(div*beta3), 
+start=list(beta1 = 10, beta2= 0.5, beta3 = 3))
+summary(beta)
+anova(beta)
+deviance(beta)
+
+
+
+div <- array(0, dim=c(131,1))
+div[1] <- 0.52
+eps <- rnorm(130, mean = 0.019, sd = 0.05)
+for(i in 2:131){
+	div[i] <- div[i-1] + eps[i-1]
+}
+
+ar.sim<-arima.sim(model=list(ar=c(.67,-.5),0.25),n=131, sd = 7)
+ar.sim
+div
+P <- 15*exp(div) + 0.15*exp(div*2.6) + ar.sim
+beta <- nls(P~0 + beta1*exp(div) + beta2*exp(div*beta3), 
+start=list(beta1 = 10, beta2= 0.5, beta3 = 3), trace=T)
+beta

@@ -1,0 +1,32 @@
+
+b <- c(15, 0.15, 2.6)
+t <- 500
+A <- array(0, dim=c(t,3))
+
+#making dividends
+div <- array(0, dim=c(t,1))
+div[1] <- 0.52
+eps <- rnorm(t-1, mean = 0.019, sd = 0.05)
+for(i in 2:t){
+	div[i] <- div[i-1] + eps[i-1]
+}
+for(j in 1:t){
+#adding ar3 as error
+ar.sim<-arima.sim(model=list(ar=c(.67,-.5),0.25),n=t, sd = 7)
+#constructing price series
+P <- b[1]*exp(div) + b[2]*exp(div*b[3]) + ar.sim
+beta <- nls(P~ beta1*exp(div) + beta2*exp(div*beta3), 
+start=list(beta1 = 10, beta2= 0.1, beta3 = 3), 
+control = nls.control(maxiter = 25, minFactor = 1/1024, warnOnly=T))
+A[j,] <- coef(beta)
+nlsF <- nls(P~ beta1*exp(div) + beta2*exp(div*coef(beta)[3]), 
+start=list(beta1 = 10, beta2= 0.2), 
+control = nls.control(maxiter = 25, minFactor = 1/1024, warnOnly=T))
+confint(nlsF)
+
+}
+A
+hist(A[,1], br = 50)
+hist(A[,2], br = 50)
+hist(A[,3], br = 50)
+

@@ -1,0 +1,65 @@
+
+b <- c(12, 0.22, 2.1)
+start <- c(14, 0.2, 2)
+dev <- 12
+t <- 52
+m <- 400
+A <- array(0, dim=c(m,3))
+F <- array(0, dim=c(m,1))
+A2 <- array(0, dim=c(m,3))
+F2<- array(0, dim=c(m,1))
+ci<- array(0, dim=c(m,2))
+ci2<- array(0, dim=c(m,2))
+#making dividends
+div <- array(0, dim=c(t,1))
+div[1] <- 1.72
+eps <- rnorm(t-1, mean = 0.02, sd = 0.05)
+for(i in 2:t){
+	div[i] <- div[i-1] + eps[i-1]
+}
+for(j in 1:m){
+#constructing errors and prices
+eta <-  rnorm(t, mean = 0, sd = dev)
+P <- b[1]*exp(div) + b[2]*exp(div*b[3]) + eta
+ar.sim<-arima.sim(model=list(ar=c(.67,-.5,0.25)),n=t, sd = dev)
+P2 <- b[1]*exp(div) + b[2]*exp(div*b[3]) + ar.sim
+
+# nls on unrestricted model
+Beta <- nls(P~ beta1*exp(div) + beta2*exp(div*beta3), 
+start=list(beta1 = start[1], beta2= start[2], beta3 = start[3]), 
+control = nls.control(maxiter = 25, minFactor = 1/1024, warnOnly=T))
+Beta2 <- nls(P2~ a1*exp(div) + a2*exp(div*a3), 
+start=list(a1 = start[1], a2= start[2], a3 = start[3]), 
+control = nls.control(maxiter = 25, minFactor = 1/1024, warnOnly=T))
+A[j,] <- coef(Beta)
+A2[j,] <- coef(Beta2)
+
+#nls with restricted lambda
+nlsF <- nls(P~ beta4*exp(div) + beta5*exp(div*(coef(Beta)[3])), 
+start=list(beta4 = start[1], beta5= start[2]), 
+control = nls.control(maxiter = 25, minFactor = 1/1024, warnOnly=T))
+ci[j,] <- confint(nlsF)[2,]
+nlsF2 <- nls(P2~ a4*exp(div) + a5*exp(div*(coef(Beta2)[3])), 
+start=list(a4 = start[1], a5= start[2]), 
+control = nls.control(maxiter = 25, minFactor = 1/1024, warnOnly=T))
+ci2[j,] <- confint(nlsF2, vcoc=NeweyWest(nlsF2))[2,]
+
+#collect results of testing nonlin. regr.
+if(confint(nlsF)[2,1] > 0){F[j] <- 1}
+if(confint(nlsF2, vcoc=NeweyWest(nlsF2))[2,1] > 0){F2[j] <- 1}
+}
+ci
+summary(ci)
+summary(ci2)
+rej <- 1-mean(F)
+rej
+rej2 <- 1-mean(F2)
+rej2
+summary(A[,2])
+hist(A[,1], br = 200)
+hist(A[,2], br = 200, xlim = c(0,0.6))
+hist(A[,3], br = 200)
+hist(A2[,1], br = 200)
+hist(A2[,2], br = 200)
+hist(A2[,3], br = 200)
+	

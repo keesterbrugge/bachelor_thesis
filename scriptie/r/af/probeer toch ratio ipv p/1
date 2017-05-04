@@ -1,0 +1,74 @@
+simulate500 <- function(t,d0,dmu,dsd,error,b){
+A <- array(0, dim=c(500,3))
+stats <- array(0, dim=c(500,4))
+tstats <- array(0, dim=c(500,1))
+div <- array(0, dim=c(t,1))
+div[1] <- d0
+#generating dividends 
+eps <- rnorm(t-1, mean = dmu, sd = dsd)
+for(i in 2:t){
+	div[i] <- div[i-1] + eps[i-1]
+}
+for(j in 1:500){
+#adding AR(3) error process that approximates the residuals obtained from unrestricted NLS
+ar.sim<-arima.sim(model=list(ar=c(.67,-.5,0.25)),n=t, sd =error)
+#constructing price series
+ratio  <- b[1] + b[2]*exp(div*(b[3] - 1)) + ar.sim
+
+#unrestricted NLS
+beta <- nls(ratio~ beta1 + beta2*exp(div*(beta3-1)), 
+start=list(simulate500 <- function(t,d0,dmu,dsd,error,b){
+A <- array(0, dim=c(500,3))
+stats <- array(0, dim=c(500,4))
+tstats <- array(0, dim=c(500,1))
+div <- array(0, dim=c(t,1))
+div[1] <- d0
+#generating dividends 
+eps <- rnorm(t-1, mean = dmu, sd = dsd)
+for(i in 2:t){
+	div[i] <- div[i-1] + eps[i-1]
+}
+for(j in 1:500){
+#adding AR(3) error process that approximates the residuals obtained from unrestricted NLS
+ar.sim<-arima.sim(model=list(ar=c(.67,-.5,0.25)),n=t, sd =error)
+#constructing price series
+ratio  <- b[1] + b[2]*exp(div*(b[3] - 1)) + ar.sim
+
+#unrestricted NLS
+beta <- nls(ratio~ beta1 + beta2*exp(div*(beta3-1)), 
+start=list(beta1 = 17, beta2= 0.03, beta3 = 3.5), 
+control = nls.control(maxiter = 50, minFactor = 1/2048, warnOnly=T),trace=T)
+
+summarynls <- summary(beta)
+coefnls <- print(summarynls)
+A[j,] <- coef(beta)
+#exponential transformation of dividends variable so that i can use OLS
+expd <- exp(div*(A[j,3]-1))
+#OLS
+olsreg <- lm(ratio ~   exp(div*(A[j,3]-1)))
+olsregsum <- summary(olsreg)
+#calculate t statistic
+#stats[j,1] <- (olsregsum$coefficients[2,1] - b[2])/olsregsum$coefficients[2,2]
+stats[j,] <- olsregsum$coefficients[2,]
+tstats[j] <- (stats[j,1] - b[2])/stats[j,2]
+#tstats[j,3] <- olsregsum$coefficients[2,2]
+}
+return(list(b1 = A[,1], b2=A[,2],b3=A[,3], stats=stats ,tstats=tstats))
+}
+
+
+sim1955 <- simulate500(52,1.72,0.02,0.05,11,c(12.7,0.23,3.03))
+#sim1955$b1
+#sim1955$b2
+#sim1955$b3
+sim1955$stats
+sim1955$tstats
+plot(density(sim1955$tstats), xlim=c(-3,15))
+
+
+#plot(density(sim1955$b1), xlim=c(-5,25))
+#plot(density(sim1955$b2), xlim=c(-2,4))
+#plot(density(sim1955$b3), xlim=c(0,5))
+#sim1871 <- simulate500(136,0.52,0.0016,0.1257,7,c(18,0.04,3.64))
+#sim1871$tstats
+#plot(density(sim1871$tstats), xlim=c(-100,100))

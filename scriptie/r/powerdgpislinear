@@ -1,0 +1,31 @@
+
+b <- c(50, 0.15, 2.6)
+t <- 130
+m <- 500
+A <- array(0, dim=c(m,3))
+F <- array(0, dim=c(m,1))
+#making dividends
+div <- array(0, dim=c(t,1))
+div[1] <- 0.52
+eps <- rnorm(t-1, mean = 0.019, sd = 0.05)
+for(i in 2:t){
+	div[i] <- div[i-1] + eps[i-1]
+}
+for(j in 1:m){
+#adding ar3 as error
+ar.sim<-arima.sim(model=list(ar=c(.67,-.5),0.25),n=t, sd = 25)
+#constructing price series
+P <- b[1]*exp(div)  + ar.sim
+beta <- nls(P~ beta1*exp(div) + beta2*exp(div*beta3), 
+start=list(beta1 = 10, beta2= 0.1, beta3 = 3), 
+control = nls.control(maxiter = 25, minFactor = 1/1024, warnOnly=T),trace=T)
+A[j,] <- coef(beta)
+Beta <- nls(P~ beta1*exp(div) + beta2*exp(div*coef(beta)[3]), 
+start=list(beta1 = 10, beta2= 0.1), 
+control = nls.control(maxiter = 25, minFactor = 1/1024, warnOnly=T))
+#als 0 niet in ci ligt, wordt hypothese c=0 verworpen
+if(confint(nlsF)[2,1] > 0){F[j] <- 1}
+}
+#mean F is percentage keren dat h0 wordt verworpen, zou alpha moeten zijn.
+mean(F)
+

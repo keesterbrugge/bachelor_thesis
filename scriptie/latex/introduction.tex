@@ -1,0 +1,136 @@
+ \documentclass{article}
+
+\usepackage{graphicx}
+\usepackage[toc,page]{appendix}
+
+\usepackage[a4paper]{geometry}
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+\usepackage{amstext,amsmath,amsfonts}
+\usepackage{dcolumn,booktabs}
+\usepackage{color}
+\usepackage{subfigure}
+\usepackage{amsthm}
+
+\makeatletter
+\def\maketitle{%
+  \null
+  \thispagestyle{empty}%
+  \vfill
+  \begin{center}\leavevmode
+    \normalfont
+    {\LARGE \@title\par}%
+    \vskip 1cm
+    {\Large \@author\par}%
+    \vskip 1cm
+    {\Large \@date\par}%
+  \end{center}%
+  \vfill
+  \null
+  \cleardoublepage
+  }
+\makeatother
+\title{Bachelor thesis}
+
+\author{Kees ter Brugge\\}
+                
+                
+\date{\today}
+
+\begin{document}
+ \maketitle
+
+
+
+\newpage
+
+Economists have always tried to understand and make predictions about the financial markets. The efficient market hypothesis says that the law of supply and demand adjusts stock prices so that they reflect all information available to the market. This means that a stock's price is equal to its fundamental value. The present-value model gets much attention from economists and argues that fundamental value is equal to the expected discounted future dividends. There is an considerable body of empirical evidence against the present-value model. Leroy and Porter (1981) and Shiller (1981) show that actual stock prices are much more volatile than the predictions made by the present-value model and that the prediction of a constant price-dividend ratio is not consistent with observed ratio's. Economists have tried to explain this excessive volatility by attributing it to variable discount rates (West(1987, 1988), Campbell and Shiller(1988b)), Noise traders (DeLong, Shleifer, Summers and Waldmann(1990)), fads (Shiller (1981)) and regime switching in the dividend process (Driffill and Sola(1998)) \\
+
+Another approach to explaining the observed volatility is by including a rational bubble in the present-value model. This approach is fueled by the boom and bust periods that have occured throughout history, for example in 1929, 1987 and 2000 with U.S. stock prices or more recently the credit crisis. One category of proposed rational bubbles are the speculative bubbles which are driven by self-fulfilling prophecies. They are consistent with Keynes's (1936) idea that investors pay less attention to market fundamentals than to what they expect the average opinion to expect about the average opinion. These bubbles (see Evans (1991), Schaller and Norden (2002)) are exogenous to economic fundamentals and grow exponentially but have a change of bursting such that they do not violate the no-arbitrage principle. \\
+
+The results from these researches are often in conflict with each other and are inconclusive. Usually the no bubble hypothesis is rejected, which is the same as rejecting the present-value model. The problem with these methodologies is that it is never clear whether the rejection can be attributed to the existence of their bubble specification or to a misspecification of the present-value model.
+
+
+Many economist found the attribution of observed price behaviour left unexplained by the present-value model to unobservable outside forces not satisfying and wanted a model in which only market fundamentals provided the epxlanation.
+
+
+Froot and Obstfeld (1991) introduced such a bubble specification, namely the intrinsic bubble. Intrinsic bubbles are deterministic nonlinear functions of dividends, so they are only determined by market fundamentals and therefore endogenous. 
+
+Driffill and Sola (1998) show that if dividends are assumed to be a markov regime-switching process, the inclusion of an intrinsic bubble does not add not much explanatory value. This result is consistent with  
+Flood and Garber's (1980) and Flood and Hodrick's (1986) finding that when investigating the failure of the present-value model, it is not possible to distinguish between changes in the processes driving market fundamentals and the presence of rational bubbles as  the cause for the failure. 
+
+But intrinsic bubbles seem compelling. They are parsimonious because they do not introduce new variables. Furthermore, 
+they allow stable periods of deviations from the price predicted by the present-value model and reproduce the overreaction of prices to changes in dividends. Intrinsic bubbles are consistent with the finding of Kanas (2005) that the failure of the present-value model might be due to the relation of prices and dividends being nonlinear instead of linear.
+
+With this paper we extend the papers of Froot and Obstfeld's (1991) and Ma and Kanas's (2004) who rejected the absence of an intrinsic bubble  in the S\&P 500 and rejected the absence of an nonlinear long-run relationship between prices and dividends.
+
+%what about to do in my thesis
+The first part of this paper shows how an intrinsic bubble fits into the present-value model and presents its properties. In the second part the Standard \& Poor's 500 index is used to  show where the present-value model fails in explaining price behaviour and test whether the intrinsic bubble model provides more explanatory power. Froot and Obstfelds's (1991) work is extended in that a time series is used that includes recent extreme price behaviour and the possibility that using a subsample provides a more accurate model is explored. Ma and Kanas (2004 ) use Granger and Hallman's (1991) nonlinear cointegration test to test for a long-run nonlinear relationship of prices and dividends. In this paper Breitung's (2001) rank-based cointegration is used, since he showed that such residual-based tests are inconsistent for some classes of nonlinear functions. In the third part we discuss the results and compare them with findings of others to see if different testing methods or recent events have changed the results.
+
+The appendix contains an explanation of the nonlinear least squares regression and a simulation to assess its accuracy. Furthermore, it contains the R codes that are used to produce some of the results in this paper. 
+
+
+\section{discussion}
+
+This paper provides further empirical evidence that supports the intrinsic bubble model earlier investigated by Froot and Obstfeld (1991) and Ma and Kanas (2004). The failure of the standard present-value model and the improvement in explanatory power of  the behaviour of stock prices and price-dividend ratio's that is yielded by including a nonlinear term in the present-value model is explored. When  a constant discount factor, risk-neutrality of agents and dividends following a geometric random walk is assumed, we  reject the absence of the resulting intrinsic bubble in the S\&P 500 index.  The parameters of the intrinsic bubble that were predicted by the dividends series ,for which the no-arbitrage principle would not be violated, are reasonably close to the parameters obtained by performing an unrestricted regression. The nonlinear least squares method used in this paper is explained and an outline of Breitung's (2001) alternative way of testing for cointegration is given. A three-year horizon out-of-sample forecast shows that using a subsample that only includes data after the structural break of dividends in 1955 does improve forecasting powers, but only marginally. The hypothesis of  absence of a linear long-run relation of prices and dividends could not be rejected using a Johansen cointegration test, but the hypothesis of absence of a long-run relation of prices and dividends could be rejected using Breitung's rank-based cointegration test. This can be interpreted as evidence supporting a nonlinear long-run relation of prices and dividends, such a relation as  the intrinsic bubble implies.\\  
+
+Although the intrinsic bubble model is much more capable of explaining price behaviour than the standard present-value model, a nuance must be made. 
+Economists know that feedback loops have a major role in the dynamics of financial markets, created through for example imitation and trend based investment strategies. To reflect this feature in the used present-value models, speculative exogenous bubbles are added.
+Obviously, many economists were sceptic and saw this as seeking refuge in exogenous forces to explain the nonlinear behaviour of prices so that nonlinear relations between prices and fundamentals would not have to be explored. In an attempt to explain the boom and busts behaviour of prices through fundamentals, intrinsic bubbles have been suggested as cause. But the problem of not being able to distinguish between misspecification of fundamentals and the presence of bubbles is still present. Furthermore, intrinsic bubbles do not adress speculative feedback loops.  \\
+
+When the inherent weaknesses the bubble approach has in explaining price behaviour are considered, one might ask if a radical new approach is needed. Behavioural economics is a growing field that attacks the main assumption of almost all modern economic theory, namely that agents are fully rational \footnotemark \footnotetext{For classics see  Simon (1955) and Hayek (1945)}. Personally, I think that the most important future insights about the  workings of the financial markets will come from a rising field I find particularly appealing, namely complexity economics . Here the economy is not  considered as a system in equilibrium that sometimes has to adjust to an exogenous shock and which is filled with fully rational agents, but rather as a constantly evolving self-organizing system filled with interacting agents that are only partly rational and where relations are highly nonlinear through the emergence of feedback loops\footnotemark \footnotetext{For more information on complexity economics see Beinhocker (2006)}. Arthur, Holland, LeBaron, Palmer and Taylor (1997) simulated such a system with agents that made their choices guided by heuristics rather than fully rational expectations. They showed that from systems without those stringent assumptions boom and busts simply emerged from the dynamics between the interacting agents. This result should urge economists to think about how much potential for future improvement there is for new keyesian economics and encourage them to consider alternative views.
+\section{references}
+
+\begin{thebibliography}{breitestes Label}
+	\bibitem Blanchard O, Watson MW. 1982. Bubbles, rational expectations and financial markets. In \emph{Crises in the Economic and Financial Structure}, Wachtel P(ed.). Lexington Book: Lexington, MA.
+	\bibitem Beinhocker ED. 2007. The origin of wealth: The radical remaking of economics and what it means for business and society. Harvard business press: Boston, MA.
+\bibitem Bidarkota PV, Dupoyet BV. 2007. Intrinsic bubbles and fat tails in stock prices: a note. \emph{Macroeconomic Dynamics}, 11: 405-422.
+	\bibitem Breitung J. 2001. Rank Tests for Nonlinear Cointegration. \emph{ Journal of Business and Economic
+Statistics}, 19: 331-340.
+
+	\bibitem Campbell J, Shiller R. 1987. Cointegration and tests of present value models. \emph{Journal
+of Political Economy}, 95 : 1062–1088.
+
+	\bibitem Campbell JY, Shiller RJ. 1988a. The dividend-price ratio and the expectations of future dividends and discount factors. \emph{Review of Financial Studies},1: 195-228.
+	\bibitem Chen S, Shen C. 2009. Can the nonlinear present value model explain the movement of stock prices? \emph{International Research Journal of Finance and Economics}, 23: 155-170.
+	\bibitem De Long JB, Shleifer A, Summers LH, Waldmann RJ. 1990. Noise trader risk in financial markets. \emph{Journal of Political Economy}, 4: 7-3-738.
+	  
+	\bibitem Diba B, and Grossman H. 1988b. Explosive rational bubbles in stock prices? \emph{American
+Economic Review}, 78: 520–530.
+	\bibitem Driffill J, Martin S. 1998. Intrinsic bubbles and regime-switching. \emph{Journal of Monetary
+Economics}, 42: 357–373.
+	\bibitem Evans G. 1991. Pitfalls in testing for explosive bubbles in asset prices. \emph{American Economic
+Review}, 31: 922–930.
+\bibitem Flood R, P. Garber. 1980. Market Fundamentals versus Price-Level Bubbles, the First
+Tests. \emph{ Journal of Political Economy}, 88:745-770.
+
+	\bibitem Flood R, and Hodrick R. 1986. Asset price volatility, bubbles and process switching. \emph{
+Journal of Finance}, 41: 831–842.
+
+	\bibitem Froot K, Obstfeld M. 1991. Intrinsic bubbles: The case of stock prices. \emph{American Economic Review}, 81: 1189-1214.
+	
+	\bibitem Gürkaynak RS. 2008. Econometric tests of asset price bubbles: taking stock. \emph{Journal of Economic Surveys},
+ 22(1): 166-186.
+ \bibitem Hayek FA. 1945. The use of knowledge in Society. \emph{The American Economic Review}, 4: 519-530.
+ \bibitem LeRoy S, Porter R. 1981. The present-value relation: tests based on implied variance
+bounds. \emph{Econometrica}, 49: 555–574.
+ \bibitem Lucas Jr, Robert E. 1978 Asset prices in an exchange economy. \emph{Econometrica}, 46: 1429–
+1445.
+ 
+ \bibitem Ma Y, Kanas A. 2004. Intrinsic bubbles revisited: evidence from nonlinear cointegration and forecasting. \emph{Journal of Forecasting}, 23: 237–250.
+ 
+ \bibitem Shiller R. 1981. Do Stock Prices Move Too Much to be Justified by Subsequent Changes in
+Dividends? \emph{American Economic Review}, 71: 421-436.
+\bibitem Simon HA. 1955. A behavioural model of rational choice. \emph{The Quarterly Journal of Economics}, 1: 99-118. 
+
+ \bibitem West KD. 1987. A Specification Test for Speculative Bubbles. \emph{ Quarterly Journal of
+Economics}, 102: 553-580.
+
+ \bibitem  West KD. 1988. Dividend Innovations and Stock Price Volatility. \emph{Econometrica}, 56: 37-61,
+ 
+\end{thebibliography}
+
+% beinhocker , hayek, herbert simmons, chen, bidarkota dupoyet invoegen. vervolgens  code klaarmaken en verhaal fatsoeneren 
+ 
+\end{document}

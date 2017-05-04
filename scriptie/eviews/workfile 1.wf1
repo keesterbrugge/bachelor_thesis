@@ -1,0 +1,4 @@
+genr pricedeflated = price/ppi * 100
+genr divdeflated = div/ppi * 100
+genr ratio = price/div
+

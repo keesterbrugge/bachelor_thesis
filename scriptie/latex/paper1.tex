@@ -1,0 +1,154 @@
+\documentclass{article}
+
+\usepackage{graphicx}
+\usepackage[toc,page]{appendix}
+
+\usepackage[a4paper]{geometry}
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+\usepackage{amstext,amsmath,amsfonts}
+\usepackage{dcolumn,booktabs}
+\usepackage{color}
+\usepackage{subfigure}
+\usepackage{amsthm}
+
+\makeatletter
+\def\maketitle{%
+  \null
+  \thispagestyle{empty}%
+  \vfill
+  \begin{center}\leavevmode
+    \normalfont
+    {\LARGE \@title\par}%
+    \vskip 1cm
+    {\Large \@author\par}%
+    \vskip 1cm
+    {\Large \@date\par}%
+  \end{center}%
+  \vfill
+  \null
+  \cleardoublepage
+  }
+\makeatother
+\title{Bachelor thesis}
+
+\author{Kees ter Brugge)\\}
+                
+                
+\date{\today}
+
+\begin{document}
+ \maketitle
+
+
+
+\newpage
+\section{introduction and abstract}
+
+
+justification for model choices
+
+\section{dividends}
+
+\section{The models}
+
+Asset pricing is mostly done by using the model Lucas (1978) suggested. When we assume risk neutrality and a discount rate equal to the yield of a risk-free asset, Lucas' model simplifies to the stochastic difference equation
+$$P_t = e^{-r}E_t(D_t + P_{t+1}) \label{standard} $$
+
+
+\subsection{intrinsic bubbles}
+
+We assume an economy where investors can choose to invest in risk-free assets with yield $e^{r}$ and risky stocks. If investors are rational and risk neutral, a real stock price equals the present value of the expected real dividend payments and price of stock in the next period discounted by rate $e^{-r}$.  
+\end{eqnarray}
+\begin{itemize}
+ \item $P_t$ real stock price at beginning of period $t$ \\
+\item $D_t $ real dividends per share paid over period $t$ \\
+\item $r $ constant, continuous real rate of interest \\
+\item $E_t$  expectation conditional on information known at beginning of period $t$
+\end{itemize}
+The market fundamental solution of this stochastic difference equation (\ref{standard}) is obtained by iterating.
+\begin{eqnarray}
+P_t^f &=& e^{-r} E_t(D_t) +  e^{-r} E_t(P_{t+1}) = e^{-r} E_t(D_t) +  e^{-r}E_t(e^{-r} E_{t+1}(D_{t+1} + P_{t+2}))  \notag \\
+&=& e^{-r} E_t(D_t) + e^{-2r} E_{t}(D_{t+1}) + e^{-2r}E_t(e^{-r} E_{t+2}(D_{t+2} + P_{t+3})) = \cdots \notag \\
+&=& \sum_{s=0}^{\infty}e^{-(s+1)r}E_t(D_{t+s}) \label{fundamental}
+\end{eqnarray}
+We assume the expected growth of dividend payments to be lower than $e^{-r}$ to ensure the existence of this solution. Solution (\ref{fundamental}) is derived by applying the transversality condition.
+\begin{eqnarray}
+\lim_{s\rightarrow \infty} e^{-rs}E_t(P_s) = 0 \label{transvertality}
+\end{eqnarray}
+Another solution of (\ref{standard}) is the market fundamental solution plus a bubble component $B_t$.
+\begin{eqnarray}
+P_t = P_t^f + B_t
+\end{eqnarray}
+This can only be a solution of (\ref{standard}) if
+\begin{eqnarray}
+B_t = e^{-r}E_t(B_{t+1}) \label{rational}
+\end{eqnarray}
+Bubbles which satisfy condition (\ref{rational}) are rational, there are no arbitrage oppurtunities.\\
+Bubbles can be
+Froot and Obstfeld (1991) suggest a type of bubble which only depends nonlinearly on dividend payments. A bubble that is a function of fundamental factors only is called an intrinsic bubble. To investigate these bubbles we have to specify the distribution of real dividends. We assume the log of real of real dividends, denoted by $d_t$, to be a random walk with drift $\mu$: 
+\begin{eqnarray}
+d_{t+1} = \mu + d_t + \xi_{t+1} \label{lognormal} \\
+d_{t+s} = d_t + s\mu + \sum_{i=1}^{s} \xi_{t+i}
+\end{eqnarray}
+where $\sum_{i=1}^{s} \xi_{t+i} \sim N(0,s\sigma^2)$. We assume $D_t$ to be known at the beginning of period $t$.
+\begin{eqnarray}
+P_t^f &=&  \sum_{s=0}^{\infty}e^{-(s+1)r}E_t(D_{t+s}) = \sum_{s=0}^{\infty}e^{-(s+1)r}E_t(e^{d_{t+s}}) = \sum_{s=0}^{\infty}e^{-(s+1)r}E_t(e^{d_t + s\mu + \sum_{i=1}^{s} \xi_{t+i}}) \\
+ &=& D_t e^{-r} \sum_{s=0}^{\infty} e^{-sr + s\mu + \frac{s\sigma^2}{2}} = D_t e^{-r} \sum_{s=0}^{\infty} \left(e^{-r + \mu + \frac{\sigma^2}{2}}\right)^s
+ = D_t e^{-r} \frac{1}{1 - e^{-r + \mu + \frac{\sigma^2}{2}}} \\ 
+ &=& D_t \frac{1}{e^r - e^{\mu + \frac{\sigma^2}{2}}} = D_t \kappa
+\end{eqnarray}
+This sum converges because we have assumed the expected growht of dividends to be lower than the discount rate, so $r > \mu + \frac{\sigma^2}{2}$. Under the null hypothetis of no bubbles, prices are a linear function of dividends. An intrinsic bubble is a nonlinear function of dividends that  allows the price-dividend ratio to be dependent of current dividends. 
+\begin{eqnarray} 
+B(D_t) &=& cD_t^{\lambda} \\
+e^{-r}E_t(B(D_{t+1})) &=& e^{-r}E_t(cD_{t+1}^{\lambda}) =  cD_t^{\lambda}e^{-r}E_t(e^{(\mu + \xi_{t+1})\lambda} = cD_t^{\lambda}e^{-r + \lambda \mu + \frac{\lambda^2 \sigma^2}{2}} = cD_t^{\lambda} = B(D_t) \\
+\text{so,  }\lambda &=& \frac{\sqrt{\mu^2 + 2r\sigma^2} - \mu}{\sigma^2} > 1
+\end{eqnarray}
+.....
+$$P_t = \kappa D_t + cD_t^{\lambda}$$
+If $\lambda$ is close to 1 we might face colinearity issues. Therefore it's better to estimate an equation for the price-dividend ratio.
+$$\frac{P_t}{D_t} = \kappa + cD_t^{\lambda - 1}$$
+
+
+\subsection{changing dividend regimes}
+If any financial time series is being followed for sufficiently long, one is bound to see changes in behaviour. 
+In time series where variables seem to display different types of behaviour, modelling this data as a markov-switching time series can be beneficial. Cecchetti, Lang and Mark (1990) and Bonomo and Garcia (1994) argue that there are regime-switches in dividends. Let us assume log real dividends to be a two-state 
+
+
+
+
+
+
+
+
+
+
+\section{results}
+
+\section{conclusion}
+
+\section{references}
+
+\end{document}
+
+Driffill and Sola (1998) critisize Froot and Obstfeld's assumptions about the time-invariance and normality of log dividends. When they regress 
+$$ \Delta d_{t} = \mu + \xi_t $$
+and test for normality of $\epsilon$ they reject the null hypothesis. By applying an ARCH test, they also find that the evidence for heteroskedasticity. Cecchetti, Lang and Mark (1990) and Bonomo and Garcia (1994) argue that there are regime-switches in dividends. 
+Therefore 
+
+Two-state markov model
+$$d_{t+1} = d_t + \mu_0 (s_{t+1} - 1) + \mu_1 s_{t+1} + (\sigma_0 (s_{t+1} - 1) + \sigma_1 s_{t+1}) \epsilon_{t+1}$$
+\begin{itemize}
+\item $d_t$:  log real dividends over period t
+\item $\mu_i$: drift of log real dividens given state i
+\item $\sigma_{i}$: standard deviation of log real dividends given state i
+\item $s_(t)$: state of real dividends over period t
+\end{itemize}
+
+
+
+contents:
+
+
+

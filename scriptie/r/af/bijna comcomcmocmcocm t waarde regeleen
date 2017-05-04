@@ -1,0 +1,43 @@
+simulate <- function(t,d0,dmu,dsd,error,b){
+A <- array(0, dim=c(500,3))
+B <- array(0, dim=c(500,2))
+div <- array(0, dim=c(t,1))
+div[1] <- d0
+#generating dividends 
+eps <- rnorm(t-1, mean = dmu, sd = dsd)
+for(i in 2:t){
+	div[i] <- div[i-1] + eps[i-1]
+}
+for(j in 1:500){
+#adding error that approximates the errors obtained
+#unrestricted NLS of the whole sample
+ar.sim<-arima.sim(model=list(ar=c(.67,-.5,0.25)),n=t, sd =error)
+#constructing price series
+P <- b[1]*exp(div) + b[2]*exp(div*b[3]) + ar.sim
+beta <- nls(P~ beta1*exp(div) + beta2*exp(div*beta3), 
+start=list(beta1 = 15, beta2= 0.1, beta3 = 3), 
+control = nls.control(maxiter = 50, minFactor = 1/2048, warnOnly=T),trace=T)
+A[j,] <- coef(beta)
+expd <- exp(div*A[j,3])
+regc <- lm(P~ exp(div) + expd)
+B[j,1] <- coef(regc)[2]
+#B[j,1] <- coef(regc)[2]
+B[j,2] <- sd(regc)[2]
+}
+return(list(b1 = A[,1], b2=A[,2],b3=A[,3], mu=B[,1],sd=B[,2]))
+
+ik moet zorgen dat ik hier de sd van c uitkrijg zodat ik de t waarde in de loop kan uitrekeenen
+}
+#then plot densities
+
+sim1955 <- simulate(52,1.72,0.02,0.05,11,c(12.7,0.23,3.03))
+sim1955$mu
+sim1955$sd
+
+plot(density(sim1955$b1), xlim=c(-5,25))
+plot(density(sim1955$b2), xlim=c(-2,4))
+plot(density(sim1955$b3), xlim=c(0,5))
+sim1871 <- simulate(136,0.52,0.0016,0.1257,7,c(18,0.04,3.64))
+plot(density(sim1871$b1), xlim=c(-5,25))
+plot(density(sim1871$b2), xlim=c(-2,4))
+plot(density(sim1871$b3), xlim=c(0,5))

@@ -1,0 +1,96 @@
+create u 1 550
+
+'Set specification for Johansen test procedure a,b,c,d or e
+
+%case="c"
+
+'Set eviewscritvals=1 if you wish to use the 5% critical values given in the EViews output table
+
+scalar eviewscritvals = 1
+
+'Set rho =1 for a system with no cointegrating vectors, set rho<1 for a system with a single cointegrating vector
+
+scalar rho = 1.00
+
+scalar smpsize = 500
+scalar iteration = 10000
+scalar seedno = 101
+
+'Note these critical values only apply if eviewcritvals<>1
+
+scalar tracecrit1 = 18.11
+scalar eigcrit1 = 15.02
+scalar tracecrit2 = 8.19
+scalar eigcrit2 = 8.19
+
+smpl 1 1
+series x = 0
+series y = 0
+scalar sum1 = 0
+scalar sum2 = 0
+scalar sum3 = 0
+scalar sum4 = 0
+
+for !iterations = 1 to iteration
+
+statusline iteration !iterations
+
+smpl 1 50+smpsize
+rndseed 100+!iterations
+series e1 = @qnorm(rnd)
+rndseed 200+!iterations
+series e2 = @qnorm(rnd)
+
+smpl 1 1
+series u1 = 0
+series u2 = 0
+smpl 2 50+smpsize
+series u1 = u1(-1)+e1
+series u2 = rho*u2(-1)+e2
+
+series y = 2*u1-u2
+series x = -u1+u2
+
+smpl 51 550
+var v1.ls 1 1 y x
+if @isobject("tab1")=1 then delete tab1 endif
+%st1 = "v1.coint("+%case+")"
+freeze(tab1) {%st1}
+scalar tracestat = @val(tab1(13,3))
+scalar eigstat=@val(tab1(25,3))
+scalar tracestat2 = @val(tab1(14,3))
+scalar eigstat2 = @val(tab1(26,3))
+
+if eviewscritvals = 1 then
+ tracecrit1 = @val(tab1(13,4))
+ tracecrit2 = @val(tab1(14,4))
+ eigcrit1 = @val(tab1(25,4))
+ eigcrit2 = @val(tab1(26,4))
+endif
+
+if tracestat>tracecrit1 then sum1 = sum1+1 endif
+if eigstat>eigcrit1 then sum2 = sum2+1 endif
+if tracestat>tracecrit1 and tracestat2>tracecrit2 then sum3 = sum3+1 endif
+if  eigstat>eigcrit1 and eigstat2>eigcrit2 then sum4=sum4+1 endif
+
+next
+
+sum1 = 100*sum1/iteration
+sum2 = 100*sum2/iteration
+sum3 = 100*sum3/iteration
+sum4 = 100*sum4/iteration
+
+if @isobject("out")=1 then delete out endif
+table out
+setcell(out,1,1,"Rejection Frequencies","l")
+setcell(out,3,1,"H0: r=","l")
+setcell(out,3,2,"Trace Test","l")
+setcell(out,4,2,"Max EV test","l")
+setcell(out,3,3,sum1,"r",5.2)
+setcell(out,4,3,sum2,"r",5.2)
+setcell(out,5,1,"H0: r=1","l")
+setcell(out,5,2,"Trace Test","l")
+setcell(out,6,2,"Max EV test","l")
+setcell(out, 5,3,sum3,"r",5.2)
+setcell(out,6,3,sum4,"r",5.2)
+

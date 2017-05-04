@@ -1,0 +1,45 @@
+
+b <- c(12, 0.22, 2.03)
+t <- 52
+m <- 500
+A <- array(0, dim=c(m,3))
+#fstat <- array(0, dim=c(m,1))
+#making dividends
+div <- array(0, dim=c(t,1))
+div[1] <- 1.72
+eps <- rnorm(t-1, mean = 0.02, sd = 0.05)
+for(i in 2:t){
+	div[i] <- div[i-1] + eps[i-1]
+}
+for(j in 1:m){
+#adding ar3 as error
+ar.sim<-arima.sim(model=list(ar=c(.67,-.5,0.25)),n=t, sd =11)
+#constructing price series
+
+P <- b[1]*exp(div) + b[2]*exp(div*b[3]) + ar.sim
+beta <- nls(P~ beta1*exp(div) + beta2*exp(div*beta3), 
+start=list(beta1 = 15, beta2= 0.1, beta3 = 3), 
+control = nls.control(maxiter = 50, minFactor = 1/2048, warnOnly=T))
+A[j,] <- coef(beta)
+
+
+
+#nls with restricted lambda
+#nlsrestr <- nls(P~ beta4*exp(div) + beta5*exp(div*(coef(beta)[3])), 
+#start=list(beta4 = 15, beta5 = 0.1), 
+#control = nls.control(maxiter = 50, minFactor = 1/2048, warnOnly=T))
+
+# when 0 is not in ci, reject h0 
+#fstat[j] <- ((confint(nlsrestr, vcoc=NeweyWest(nlsrestr))[2,1]+confint(nlsrestr, vcoc=NeweyWest(nlsrestr))[2,2])/2)^2
+}
+#fstat
+A
+hist(A[,1], breaks = 50, xlim = c(-5,25))
+hist(A[,2], breaks = 50, xlim = c(-2,4) )
+hist(A[,3], breaks = 50, xlim = c(0,5))
+d1 <- density(A[,1])
+d2 <- density(A[,2])
+d3 <- density(A[,3])
+plot(d1, xlim=c(-5,25), main="ddfdff")
+plot(d2, xlim=c(-2,4))
+plot(d3, xlim=c(0,5))
